@@ -1,84 +1,88 @@
-# Sprint Practice: State Management - Redux
+# Sprint Practice: Express and Node.js - Shows & Characters
 
 ## Description
 
-In this challenge, you are to build a list of NBA players utilizing Redux as your state management. Build this challenge from the ground up using what you have learned about state management.
+In this challenge, you will design and create a web API to manage a resource for 'Shows' as well as 'Characters' from these shows
+## Instructions
 
-## Project Set Up
 
-Follow these steps to set up your project:
+If the instructions are not clear, please seek support from your TL and Instructor on Slack.
 
-- [ ] `fork & clone` this repository.
-- [ ] `cd` into the forked copy of this repository.
-- [ ] **RUN** `npm install` to retrieve all `server-side` the dependencies.
-- [ ] **RUN** `npm start` to get your API up and running on `http://localhost:3333`. This is the **URL** you're going to need to use within your React app in order to make AJAX requests for data.
-- [ ] After your API is up and running, you can open chrome and type in `http://localhost:3333/players`. You should see an array with one player in it returned to you. This is an array that your **API** will be using to store our player Data.
-- [ ] **LOOK** at your `project` directory and notice it's just a plain ol' React App that we've built using `create-react-app`.
-- [ ] **Open** `src/index.js` to make sure that your app is ready to roll with the proper middleware.
-- [ ] **cd** into `project` and run `npm install` to retrieve the client side dependencies.
-- [ ] **RUN** `npm start` to fire up your React application. There ought to be a pretty little message awaiting you welcoming you to the app. `Follow` the prompting.
+Follow these steps to set up and work on your project:
 
-**LOOK** at all the files you've been given for this project. One important file to note is `server.js`. This file contains an **API** that you are going to be interfacing with. Below is documentation on how to interact with the **API**.
+- [ ] Create a forked copy of this project.
+- [ ] Clone your forked version of the Repository.
+- [ ] Create a new Branch on the clone: git checkout -b `firstName-lastName`.
+- [ ] Implement the project on this Branch, committing changes regularly.
+- [ ] Push commits: git push origin `firstName-lastName`.
+
+## Self-Study/Essay Questions
+
+Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
+
+- [ ] Mention two parts of Express that you learned about this week.
+
+- [ ] Describe Middleware?
+
+- [ ] Describe a Resource?
+
+- [ ] What can the API return to help clients know if a request was successful?
+
+- [ ] How can we partition our application into sub-applications?
 
 ## Minimum Viable Product
 
-- [ ] Plan and implement how you are going to manage your state for your application
-- [ ] You _must_ use either context or Redux as your state management system
-- [ ] Once you have planned out your state management system, fetch data from the player server and display the data it returns
-- [ ] Add a form to collect info for a new player, and make a POST request to the server to add a new player to your village
+- [ ] Configure an _npm script_ named _"server"_ that will execute your code using _nodemon_. Make _nodemon_ be a development time dependency only, it shouldn't be deployed to production.
+- [ ] Configure an _npm script_ named _"start"_ that will execute your code using _node_.
 
-## API documentation
+Design and build the necessary endpoints to:
 
-### GET '/players'
+- [ ] Perform CRUD operations on _shows_ and _characters_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
+- [ ] Retrieve the list of characters for a show.
 
-- [ ] Retrieve an array all the players in the player DB by writing a `GET` to the endpoint `/players`.
-- [ ] Double check that your response from the server is an array of players.
+Please read the following sections before implementing the Minimum Viable Product, they describe how the database is structured and the files and methods available for interacting with the data.
 
-```js
-[
-  {
-    name: "Ricky Rubio",
-    age: 29,
-    height: "6′ 4″",
-    id: 0
-  }
-];
-```
+### Database Schemas
 
-### POST '/players'
+The description of the structure and extra information about each _resource_ stored in the included database (`./data/shows.db3`) is listed below.
 
-- [ ] Design the functionality to add a player to the player DB you'll need all three fields. `name`, `age`, and `height`.
+#### Shows
 
-Example of the shape of data to be sent to the `POST` endpoint:
+| Field       | Data Type | Metadata                                                                    |
+| ----------- | --------- | --------------------------------------------------------------------------- |
+| id          | number    | no need to provide it when creating projects, the database will generate it |
+| name        | string    | required.                                                                   |
+| description | string    | required.                                                                   |
+| watched     | boolean   | used to indicate if the show has been watched, not required            |
 
-```js
-  {
-    name: "Ricky Rubio",
-    age: 29,
-    height: "6′ 4″",
-    id: 0
-  }
-```
+#### Characters
 
-- [ ] Double check to make sure that a player is created correctly once your functionality is built out.
+| Field       | Data Type | Metadata                                                                                         |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------ |
+| id          | number    | no need to provide it when creating posts, the database will automatically generate it.          |
+| show_id     | number    | required, must be the id of an existing project.                                                 |
+| name        | string    | up to 128 characters long, required.                                                             |
+| description | string    | no size limit, required.                                                                         |
+| like        | boolean   | used to show if the character is someone you like, not requred                                   |
 
-Initially Ricky will be in the array, but it takes more than one player to make a roster. Be sure to add a few players!
+### Database Persistence Helpers
 
-Example of object created in player DB:
+The `/data/helpers` folder includes files you can use to manage the persistence of _shows_ and _characters_ data. These files are `showsModel.js` and `charactersModel.js`. Both files publish the following api, which you can use to store, modify and retrieve each resource:
 
-```js
-[
-  {
-    name: "Ricky Rubio",
-    age: 29,
-    height: "6′ 4″",
-    id: 0
-  },
-  {
-    name: "Stephen Curry",
-    age: 32,
-    height: "6′ 3″",
-    id: 1
-  }
-];
-```
+**All these helper methods return a promise. Remember to use .then().catch() or async/await.**
+
+- `get()`: resolves to an array of all the resources contained in the database. If you pass an `id` to this method it will return the resource with that id if one is found.
+- `insert()`: calling insert passing it a resource object will add it to the database and return the newly created resource.
+- `update()`: accepts two arguments, the first is the `id` of the resource to update, and the second is an object with the `changes` to apply. It returns the updated resource. If a resource with the provided `id` is not found, the method returns `null`.
+- `remove()`: the remove method accepts an `id` as it's first parameter and, upon successfully deleting the resource from the database, returns the number of records deleted.
+
+The `showsModel.js` helper includes an extra method called `getShowsCharacters()` that takes a _show id_ as it's only argument and returns a list of all the _characters_ for the _show_.
+
+We have provided test data for all the resources.
+
+## Stretch Goal
+
+- Use `create-react-app` to create an application in a separate folder (outside the API shows/data folder). Name it anything you want.
+- From the React application show a list of all _shows_ using the API you built.
+- Add functionality to show the details of a show, including its characters, when clicking a show's name in the list. Use React Router to navigate to a separate route to show the show's details.
+- Add styling!
