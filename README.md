@@ -23,7 +23,7 @@ Follow these steps to set up and work on your project:
 
 Design and build the necessary endpoints to:
 
-- [ ] Perform CRUD operations on _shows_ and _characters_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
+- [ ] Perform CRUD operations on _shows_ and _characters_. When adding a character, make sure the `show_id` provided belongs to an existing `show`. If you try to add a character with a `show_id` of 3 and there is no show with that `id` the database will return an error.
 - [ ] Retrieve the list of characters for a show.
 
 Please read the following sections before implementing the Minimum Viable Product, they describe how the database is structured and the files and methods available for interacting with the data.
