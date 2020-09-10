@@ -16,20 +16,6 @@ Follow these steps to set up and work on your project:
 - [ ] Implement the project on this Branch, committing changes regularly.
 - [ ] Push commits: git push origin `firstName-lastName`.
 
-## Self-Study/Essay Questions
-
-Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
-
-- [ ] Mention two parts of Express that you learned about this week.
-
-- [ ] Describe Middleware?
-
-- [ ] Describe a Resource?
-
-- [ ] What can the API return to help clients know if a request was successful?
-
-- [ ] How can we partition our application into sub-applications?
-
 ## Minimum Viable Product
 
 - [ ] Configure an _npm script_ named _"server"_ that will execute your code using _nodemon_. Make _nodemon_ be a development time dependency only, it shouldn't be deployed to production.
@@ -81,7 +67,7 @@ The `showsModel.js` helper includes an extra method called `getShowsCharacters()
 We have provided test data for all the resources.
 
 ## Stretch Goal
-
+- Add a custom middleware function that logs information about every request that comes into your server e.g. provides information about the request method or request url.
 - Use `create-react-app` to create an application in a separate folder (outside the API shows/data folder). Name it anything you want.
 - From the React application show a list of all _shows_ using the API you built.
 - Add functionality to show the details of a show, including its characters, when clicking a show's name in the list. Use React Router to navigate to a separate route to show the show's details.
